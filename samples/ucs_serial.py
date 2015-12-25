@@ -11,6 +11,7 @@ from UcsSdk.MoMeta.NetworkElement import NetworkElement
 #from UcsSdk.MoMeta.EquipmentFex import  EquipmentFex
 from UcsSdk.MoMeta.EquipmentIOCard import  EquipmentIOCard
 from UcsSdk.MoMeta.EquipmentSwitchCard import  EquipmentSwitchCard
+from UcsSdk.MoMeta.VnicEther import VnicEther
 
 import csv
 import argparse
@@ -48,7 +49,6 @@ def main(args):
     # Get the Fabric Interconnect Expansion Cards
     fex_list = handle.GetManagedObject(None, EquipmentSwitchCard.ClassId(),
                                        None, dumpXml=CONST_DEBUG)
-
 
     if args.out:
         with open(args.out, 'w') as file_out:
