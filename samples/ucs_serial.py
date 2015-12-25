@@ -14,6 +14,7 @@ from UcsSdk.MoMeta.EquipmentSwitchCard import  EquipmentSwitchCard
 
 import csv
 import argparse
+from pprint import pprint
 
 CONST_DEBUG = False
 CONST_HEADER_ROW = (('EQUIPMENTTYPE', 'EQUIPMENTID', 'SERIALNUMBER'))
@@ -49,27 +50,46 @@ def main(args):
                                        None, dumpXml=CONST_DEBUG)
 
 
-    with open(args.out, 'w') as file_out:
-        writer = csv.writer(file_out)
-        writer.writerow(CONST_HEADER_ROW)
-
+    if args.out:
+        with open(args.out, 'w') as file_out:
+            writer = csv.writer(file_out)
+            writer.writerow(CONST_HEADER_ROW)
+    
+            for blade  in blades:
+                writer.writerow(('BLADE', blade.Dn, blade.Serial))
+    
+            for server in rack_servers:
+                writer.writerow(('RACK_SERVER', server.Dn, server.Serial))
+    
+            for chassis in chassis_list:
+                writer.writerow(('CHASSIS', chassis.Dn, chassis.Serial))
+    
+            for iom in iom_list:
+                writer.writerow(('IOM', iom.Dn, iom.Serial))
+    
+            for fabric in fabric_list:
+                writer.writerow(('FABRIC', fabric.Dn, fabric.Serial))
+    
+            for fex in fex_list:
+                writer.writerow(('FABRIC_EXPANSION', fex.Dn, fex.Serial))
+    else:
         for blade  in blades:
-            writer.writerow(('BLADE', blade.Dn, blade.Serial))
+            pprint(('BLADE', blade.Dn, blade.Serial))
 
         for server in rack_servers:
-            writer.writerow(('RACK_SERVER', server.Dn, server.Serial))
+            pprint(('RACK_SERVER', server.Dn, server.Serial))
 
         for chassis in chassis_list:
-            writer.writerow(('CHASSIS', chassis.Dn, chassis.Serial))
+            pprint(('CHASSIS', chassis.Dn, chassis.Serial))
 
         for iom in iom_list:
-            writer.writerow(('IOM', iom.Dn, iom.Serial))
+            pprint(('IOM', iom.Dn, iom.Serial))
 
         for fabric in fabric_list:
-            writer.writerow(('FABRIC', fabric.Dn, fabric.Serial))
+            pprint(('FABRIC', fabric.Dn, fabric.Serial))
 
         for fex in fex_list:
-            writer.writerow(('FABRIC_EXPANSION', fex.Dn, fex.Serial))
+            pprint(('FABRIC_EXPANSION', fex.Dn, fex.Serial))
 
     handle.Logout()
 
@@ -77,7 +97,7 @@ if __name__ == '__main__':
 
     PARSER = argparse.ArgumentParser(description="Dump Serial Numbers to CSV")
     PARSER.add_argument('-u', '--ucs', help="UCS Manager IP", required=True)
-    PARSER.add_argument('-o', '--out', help="out CSV File Path", required=True)
+    PARSER.add_argument('-o', '--out', help="out CSV File Path", required=False)
 
     ARGS = PARSER.parse_args()
     main(ARGS)
